@@ -11,6 +11,7 @@ public class ShootingMechanic : MonoBehaviour
     public float bulletSpeed;
     public AudioSource shootingSound;
     public Animator anim;
+    public GunAmmo gunAmmo;
 
     // Start is called before the first frame update
     void Update()
@@ -20,6 +21,7 @@ public class ShootingMechanic : MonoBehaviour
             ShootBullet();
             PlayFireSound();
             AddProjectile();
+            gunAmmo.SingleFireAmmoCount();
         }
     }
 
