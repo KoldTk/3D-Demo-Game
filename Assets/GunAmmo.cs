@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GunAmmo : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class GunAmmo : MonoBehaviour
     public ShootingMechanic gun;
     public Animator anim;
     public AudioSource reloadSound;
+    public UnityEvent loadedAmmoChanged;
 
     private int _loadedAmmo;
     public int LoadedAmmo
@@ -17,11 +19,10 @@ public class GunAmmo : MonoBehaviour
         set
         {
             _loadedAmmo = value;
+            loadedAmmoChanged.Invoke();
             if (_loadedAmmo <= 0)
             {
                 Reload();
-                PlayerReloadSound();
-                RefillAmmo();
             }
             else
             {
@@ -39,9 +40,7 @@ public class GunAmmo : MonoBehaviour
     private void Start()
     {
         RefillAmmo();
-        Debug.Log(_loadedAmmo);
-        Debug.Log(LoadedAmmo);
-        Debug.Log(magSize);
+
     }
 
     public void SingleFireAmmoCount() => LoadedAmmo--;
