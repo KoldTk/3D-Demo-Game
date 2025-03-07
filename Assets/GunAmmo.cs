@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class GunAmmo : MonoBehaviour
+public class GunAmmo : Shooting
 {
     public int magSize;
-    public ShootingMechanic gun;
+    public Shooting shooting;
     public Animator anim;
     public AudioSource reloadSound;
     public UnityEvent loadedAmmoChanged;
@@ -52,12 +52,12 @@ public class GunAmmo : MonoBehaviour
 
     private void UnlockShooting()
     {
-        gun.enabled = true;
+        shooting.enabled = true;
     }
 
     private void LockShooting()
     {
-        gun.enabled = false;
+        shooting.enabled = false;
     }
     private void Update()
     {
@@ -70,4 +70,10 @@ public class GunAmmo : MonoBehaviour
     }
 
     public void PlayerReloadSound() => reloadSound.Play();
+    public void OnGunSelected() => UpdateShootingLock();
+
+    private void UpdateShootingLock()
+    {
+        shooting.enabled = _loadedAmmo > 0;
+    }
 }

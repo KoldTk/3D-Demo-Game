@@ -4,15 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class AutomaticShooting : MonoBehaviour
+public class AutomaticShooting : Shooting
 {
     public Animator anim;
     public int rpm;
     public AudioSource shootSound;
-    public GameObject hitMarkerPrefab;
-    public Camera aimingCamera;
-    public LayerMask layerMask;
     public UnityEvent onShoot;
+    public GunAmmo gunAmmo;
+    public GunRaycaster gunRaycaster;
 
     private float lastShot;
     private float interval;
@@ -42,19 +41,10 @@ public class AutomaticShooting : MonoBehaviour
 
     private void Shoot()
     {
-        anim.Play("Shoot", layer: -1, normalizedTime: 0);
+        anim.Play("SVZAnim", layer: -1, normalizedTime: 0);
+        gunRaycaster.PerformRaycasting();
         shootSound.Play();
-        PerformRayCasting();
         onShoot.Invoke();
-    }
-
-    private void PerformRayCasting()
-    {
-        Ray aimingRay = new Ray(aimingCamera.transform.position, aimingCamera.transform.forward);
-        if (Physics.Raycast(aimingRay, out RaycastHit hitInfo, 1000f, layerMask))
-        {
-            Quaternion effectRotation = Quaternion.LookRotation(hitInfo.normal);
-            Instantiate(hitMarkerPrefab, hitInfo.point, effectRotation);
-        }
+        gunAmmo.SingleFireAmmoCount();
     }
 }
