@@ -2,11 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Health : MonoBehaviour
 {
     public int maxHealthPoint;
     public Animator anim;
+    public UnityEvent onDie;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,5 +37,6 @@ public class Health : MonoBehaviour
     private void Die()
     {
         anim.SetTrigger("Die");
+        onDie.Invoke();
     }
 }

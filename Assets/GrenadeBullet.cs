@@ -7,6 +7,9 @@ public class GrenadeBullet : MonoBehaviour
     public GameObject explosionPrefab;
     public float explosionRadius;
     public float explosionForce;
+    public int damage;
+
+    private List<Health> oldVictims = new List<Health>();
     // Start is called before the first frame update
     void Start()
     {
@@ -28,16 +31,30 @@ public class GrenadeBullet : MonoBehaviour
 
     private void BlowObject()
     {
+        oldVictims.Clear();
         Collider[] affectedObject = Physics.OverlapSphere(transform.position, explosionRadius);
         for (int i = 0; i < affectedObject.Length; i++)
         {
-            Rigidbody rigidbody = affectedObject[i].attachedRigidbody;
-            if (rigidbody)
-            {
-                rigidbody.AddExplosionForce(explosionForce, transform.position, explosionRadius, 1, ForceMode.Impulse);
-            }    
+            DeliverDamage(affectedObject[i]);
+            AddForceToObject(affectedObject[i]);
+
         }    
-
     }    
-
+    private void DeliverDamage(Collider victim)
+    {
+        Health health = victim.GetComponentInParent<Health>();
+        if (health != null && !oldVictims.Contains(health))
+        {
+            health.TakeDamage(damage);
+            oldVictims.Add(health);
+        }
+    }
+    private void AddForceToObject(Collider affectedObject)
+    {
+        Rigidbody rigidbody = affectedObject.attachedRigidbody;
+        if (rigidbody)
+        {
+            rigidbody.AddExplosionForce(explosionForce, transform.position, explosionRadius, 1, ForceMode.Impulse);
+        }
+    }
 }
