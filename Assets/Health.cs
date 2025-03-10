@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Events;
 
 public class Health : MonoBehaviour
@@ -9,9 +11,11 @@ public class Health : MonoBehaviour
     public int maxHealthPoint;
     public Animator anim;
     public UnityEvent onDie;
+    ZombieMovement zombieMovement;
     // Start is called before the first frame update
     void Start()
     {
+        zombieMovement = GetComponent<ZombieMovement>();
         healthPoint = maxHealthPoint;
     }
 
@@ -25,13 +29,23 @@ public class Health : MonoBehaviour
     private bool isDead => healthPoint <= 0;
     public void TakeDamage(int damage)
     {
-        if (isDead) return;
-
-        healthPoint -= damage;
         if (isDead)
         {
+            return;
+        }
+        else
+        {
+            healthPoint -= damage;
+        }
+
+        if (isDead)
+        {
+            GetComponent<NavMeshAgent>().enabled = false;
+            zombieMovement.enabled = false;
+
             Die();
-        }    
+        }
+        
     }
 
     private void Die()

@@ -14,18 +14,15 @@ public class GunRaycaster : MonoBehaviour
     public void PerformRaycasting()
     {
         Ray aimingRay = new Ray(aimingCamera.transform.position, aimingCamera.transform.forward);
-        
-        if(Physics.Raycast(aimingRay, out RaycastHit hitInfo, 1000f, layerMask))
+
+        if (Physics.Raycast(aimingRay, out RaycastHit hitInfo, 1000f, layerMask))
         {
             Quaternion effectRotation = Quaternion.LookRotation(hitInfo.normal);
             HitSurface hitSurface = hitInfo.collider.GetComponentInParent<HitSurface>();
             if (hitSurface != null)
             {
-                
                 ApplyHitEffect(hitSurface.surfaceType, hitInfo.point, effectRotation);
             }
-            
-            
             DeliverDamage(hitInfo);
         }
     }
