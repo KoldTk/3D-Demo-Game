@@ -43,6 +43,16 @@ public class Health : MonoBehaviour
             GetComponent<NavMeshAgent>().enabled = false;
             zombieMovement.enabled = false;
 
+            Rigidbody rb = GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.isKinematic = false;
+            }
+
+            foreach (Rigidbody rbChild in GetComponentsInChildren<Rigidbody>())
+            {
+                rbChild.isKinematic = false;
+            }
             Die();
         }
         

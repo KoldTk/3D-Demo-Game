@@ -9,6 +9,8 @@ public class ZombieMovement : MonoBehaviour
     public Animator anim;
     public NavMeshAgent agent;
     public float reachingRaidus;
+
+
     // Start is called before the first frame update
     void Start()
     {

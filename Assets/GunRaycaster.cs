@@ -24,6 +24,7 @@ public class GunRaycaster : MonoBehaviour
                 ApplyHitEffect(hitSurface.surfaceType, hitInfo.point, effectRotation);
             }
             DeliverDamage(hitInfo);
+            Debug.Log("Collide: " + hitInfo.collider.gameObject.name);
         }
     }
 
